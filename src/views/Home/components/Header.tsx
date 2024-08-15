@@ -1,49 +1,43 @@
-import React, { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { Button } from '@/components/ui'
-import { useSinglePrismicDocument } from '@prismicio/react'
 import { FaArrowRight } from "react-icons/fa";
 import { FaArrowCircleRight } from "react-icons/fa";
 
-const changeURL = (anchor: string) => {
-    const fullURL = `${window.location.origin}/${anchor}`;
-    return fullURL;
-};
-
-const menuLinks = [
-    {
-        text: 'Mens'
-    },
-    {
-        text: 'Women'
-    },
-    {
-        text: 'Unisex'
-    },
-    {
-        text: 'Children'
-    }
-]
-
 const Header = () => {
     const [isMenuFocused, setIsMenuFocused] = useState(false)
+    const [menus , setMenus] = useState([])
+
+    useEffect(()=>{
+        const fetchData = async ()=>{
+            const response = await fetch("https://e-commerce-api-3l8b.onrender.com/api/categories").then((res)=>{
+                if(res.ok) {
+                    return res.json()
+                }
+            })
+            setMenus(response)
+        } 
+        fetchData()
+    },[])
+
+
 
     return (
-        <header className="2xl:p-5 md:p-1 fixed w-full top-0 bg-white z-30 opacity-90 small shadow">
+        <header className="2xl:p-5 md:p-1 fixed w-full top-0 z-30 opacity-90 small shadow bg-yellow-300">
             <div className="container overflow-hidden">
                 <div className="flex justify-between items-center">
                     <a className="flex p-2 " href="/">
-                        E-Commerce
+                        <img src='public\assets\logo.png' alt='logo' height="50px" width="150px" color='text-black'/>
                     </a>
                     <nav className="hidden lg:block">
                         <ul className="navbar flex flex-col justify-center font-chivo gap-8 lg:flex-row">
-                            {menuLinks && Array.isArray(menuLinks) && menuLinks.length ? menuLinks?.map((link) => (
+                            {menus && Array.isArray(menus) && menus.length ? menus?.map((link) => (
                                 <li
                                     className="group  relative dropdown flex items-center"
                                 >
                                     <a
-                                        className="hover:text-green-900 text-lg font-normal menu-link lg:text-heading-6 mr-[7px]"
+                                        className="hover:text-green-900 text-lg text-black font-normal menu-link lg:text-heading-6 mr-[7px]"
                                     >
-                                        {link.text}
+                                        {link?.title}
                                     </a>
                                 </li>
                             )):null}
@@ -95,11 +89,11 @@ const Header = () => {
                                 </div>
 
                                 <div className="w-full text-center">
-                                    {menuLinks.map((link) => (
+                                    {menus.map((link) => (
                                         <a
                                             className="w-full block hover:bg-gray-200 py-4 px-6"
                                         >
-                                            {link.text}
+                                            {link?.title}
                                         </a>
                                     ))}
 
