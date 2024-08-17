@@ -1,52 +1,44 @@
 import { Card } from '@/components/ui';
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import Star from './Star';
+import { getProducts, getcategories, useAppDispatch, useAppSelector } from '../store';
+import { CustomSpinner, calculateOriginalPrice } from '@/utils/helpers/helpers';
+import { Link } from 'react-router-dom';
 
 const Data = () => {
-    const [data, setData] = useState([]);
-    const [categories, setCategories] = useState([]);
+
+    const dispatch = useAppDispatch()
     const [productsByCategory, setProductsByCategory] = useState({});
+    const products = useAppSelector((state)=>state.HomeState.data.products)
+    const categories = useAppSelector((state)=>state.HomeState.data.categories)
+    const loading = useAppSelector((state)=>state.HomeState.data.loading)
 
     useEffect(() => {
-        const fetchProductsData = async () => {
-            const response = await fetch('https://e-commerce-api-3l8b.onrender.com/api/products').then((res) => {
-                if (res.ok) {
-                    return res.json();
-                }
-            });
-            setData(response);
-            groupProductsByCategory(response); // Group products once they are fetched
-        };
-
-        const fetchCategoriesData = async () => {
-            const response = await fetch('https://e-commerce-api-3l8b.onrender.com/api/categories').then((res) => {
-                if (res.ok) {
-                    return res.json();
-                }
-            });
-            setCategories(response);
-        };
-
-        fetchProductsData();
-        fetchCategoriesData();
+        dispatch(getProducts())
+        dispatch(getcategories())
     }, []);
 
-    // Function to calculate original price from discounted price and discount percentage
-    const calculateOriginalPrice = (discountedPrice: number, discountPercentage: number) => {
-        return discountedPrice / (1 - discountPercentage / 100);
-    };
+    useEffect(() => {
+        if (products.length > 0 && categories.length > 0) {
+            groupProductsByCategory(products);
+        }
+    }, [products, categories]);
 
     // Function to group products by category
-    const groupProductsByCategory = (products) => {
+    const groupProductsByCategory = useCallback((products) => {
         const grouped = products.reduce((acc, product) => {
             (acc[product.category] = acc[product.category] || []).push(product);
             return acc;
         }, {});
         setProductsByCategory(grouped);
-    };
+    },[products])
+
+    if(loading) {
+        return <CustomSpinner />
+    }
 
     return (
-        <div className='px-16 py-8'>
+        <div className='px-4 md:px-16 py-3 md:py-8'>
             {categories.map((category) => {
                 const products = productsByCategory[category.title] || [];
                 return (
@@ -57,9 +49,9 @@ const Data = () => {
                                 const fullStars = Math.floor(item.rating);
                                 const hasHalfStar = item.rating % 1 >= 0.5;
                                 const originalPrice = calculateOriginalPrice(item.price, 20); // Assuming 20% discount
-
                                 return (
                                     <Card className='h-full' key={item.id}>
+                                        <Link to={`/product/${item._id}`} className="block h-full">
                                         <div className='h-1/2'>
                                             <img src={item?.imgs[0] ? item.imgs[0] : item.imgs[1]} alt="image" />
                                         </div>
@@ -86,6 +78,7 @@ const Data = () => {
                                                 </div>
                                             </div>
                                         </div>
+                                        </Link>
                                     </Card>
                                 );
                             })}

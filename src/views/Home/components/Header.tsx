@@ -6,6 +6,7 @@ import { FaArrowCircleRight } from "react-icons/fa";
 const Header = () => {
     const [isMenuFocused, setIsMenuFocused] = useState(false)
     const [menus , setMenus] = useState([])
+    const windowOrigin = window.location.origin
 
     useEffect(()=>{
         const fetchData = async ()=>{
@@ -22,11 +23,11 @@ const Header = () => {
 
 
     return (
-        <header className="2xl:p-5 md:p-1 fixed w-full top-0 z-30 opacity-90 small shadow bg-yellow-300">
+        <header className="2xl:p-5 md:p-1 fixed w-full top-0 z-30 opacity-90 small shadow bg-yellow-400">
             <div className="container overflow-hidden">
                 <div className="flex justify-between items-center">
                     <a className="flex p-2 " href="/">
-                        <img src='assets\logo.png' alt='logo' height="50px" width="150px" color='text-black'/>
+                        <img src={`${windowOrigin}/public\\assets\\logo.png`} alt='logo' height="50px" width="150px" color='text-black'/>
                     </a>
                     <nav className="hidden lg:block">
                         <ul className="navbar flex flex-col justify-center font-chivo gap-8 lg:flex-row">
@@ -48,6 +49,7 @@ const Header = () => {
                         <button type="button">
                             {' '}
                             <a
+                                href='/sign-in'
                                 className="flex items-center inline-block z-10 relative transition-all duration-200 group px-[22px] py-[15px] lg:px-[32px] lg:py-[22px] rounded-[50px] bg-gray-100 text-gray-900 hover:bg-gray-900 hover:text-white hover:-translate-y-[2px] hidden lg:flex"
                             >
                                 <span className="block text-inherit w-full h-full rounded-[50px] text-lg font-bold">

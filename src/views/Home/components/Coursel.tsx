@@ -1,5 +1,3 @@
-import { Carousel } from "@material-tailwind/react";
- 
 const CarouselTransition = () => {
   return (
     <div className="mt-24">
