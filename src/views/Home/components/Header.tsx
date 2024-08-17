@@ -26,7 +26,7 @@ const Header = () => {
             <div className="container overflow-hidden">
                 <div className="flex justify-between items-center">
                     <a className="flex p-2 " href="/">
-                        <img src='public\assets\logo.png' alt='logo' height="50px" width="150px" color='text-black'/>
+                        <img src='assets\logo.png' alt='logo' height="50px" width="150px" color='text-black'/>
                     </a>
                     <nav className="hidden lg:block">
                         <ul className="navbar flex flex-col justify-center font-chivo gap-8 lg:flex-row">
@@ -35,6 +35,7 @@ const Header = () => {
                                     className="group  relative dropdown flex items-center"
                                 >
                                     <a
+                                        href={`#${link.title.toLowerCase().replace(/\s+/g, '-')}`}
                                         className="hover:text-green-900 text-lg text-black font-normal menu-link lg:text-heading-6 mr-[7px]"
                                     >
                                         {link?.title}
@@ -91,6 +92,7 @@ const Header = () => {
                                 <div className="w-full text-center">
                                     {menus.map((link) => (
                                         <a
+                                            href={`#${link.title.toLowerCase().replace(/\s+/g, '-')}`}
                                             className="w-full block hover:bg-gray-200 py-4 px-6"
                                         >
                                             {link?.title}

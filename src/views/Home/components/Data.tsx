@@ -50,7 +50,7 @@ const Data = () => {
             {categories.map((category) => {
                 const products = productsByCategory[category.title] || [];
                 return (
-                    <div key={category.id} className='mb-12'>
+                    <div key={category.id} id={category.title.toLowerCase().replace(/\s+/g, '-') } className='mb-12'>
                         <h2 className='text-2xl font-bold mb-4'>{category.title}</h2>
                         <div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-3'>
                             {products.map((item) => {
