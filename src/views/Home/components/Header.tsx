@@ -34,7 +34,7 @@ const Header = () => {
             <div className="container overflow-hidden">
                 <div className="flex justify-between items-center">
                     <a className="flex p-2 " href="/">
-                        <img src={`${windowOrigin}/public\\assets\\logo.png`} alt='logo' height="50px" width="150px" color='text-black' />
+                        <img src={`${windowOrigin}\\assets\\logo.png`} alt='logo' height="50px" width="150px" color='text-black' />
                     </a>
                     {pathname === '/' && <nav className="hidden lg:block">
                         <ul className="navbar flex flex-col justify-center font-chivo gap-8 lg:flex-row">
@@ -81,9 +81,15 @@ const Header = () => {
                         </button>
                     </div>
 
-                    <>
+                    <div className='flex md:hidden items-center'>
+                    <Link to="/cart" className=" items-center">
+                            <Badge content={cart ? cart.length : 0}>
+                                <FaCartShopping size={28} />
+                            </Badge>
+                        </Link>
+                    
                         <button
-                            className="block lg:hidden py-3 px-4 mx-2 rounded focus:outline-none hover:bg-gray-200 group"
+                            className="block md:hidden py-3 px-4 mx-2 rounded focus:outline-none hover:bg-gray-200 group"
                             onClick={() => setIsMenuFocused(true)}
                         >
                             <div className="w-5 h-1 bg-gray-600 mb-1"></div>
@@ -123,7 +129,7 @@ const Header = () => {
                                 </div>
                             </div>
                         </div>
-                    </>
+                    </div>
                 </div>
             </div>
         </header>
