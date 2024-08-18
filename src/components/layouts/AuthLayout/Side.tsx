@@ -27,15 +27,13 @@ const Side = ({ children, content, ...rest }: SideProps) => {
                         />
                         <div className="text-white">
                             <div className="font-semibold text-base">
-                                Brittany Hale
+                                Pradeepa
                             </div>
-                            <span className="opacity-80">CTO, Onward</span>
+                            <span className="opacity-80">CEO, Onward</span>
                         </div>
                     </div>
                     <p className="text-lg text-white opacity-80">
-                        Elstar comes with a complete set of UI components
-                        crafted with Tailwind CSS, it fulfilled most of the use
-                        case to create modern and beautiful UI and application
+                    MSA Products helps you create an outstanding online shopping experience. Our e-commerce solutions offer a complete set of tools to build a stylish and easy-to-use online store.
                     </p>
                 </div>
                 <span className="text-white">

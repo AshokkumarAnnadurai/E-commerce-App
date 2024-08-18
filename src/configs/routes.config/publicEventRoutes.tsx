@@ -19,6 +19,15 @@ const publicEventRoutes: Routes = [
         meta: {
             layout: 'home',
         },
+    },
+    {
+        key: 'cart',
+        path: '/cart',
+        component: lazy(() => import('@/views/Home/components/CartPage')),
+        authority: [],
+        meta: {
+            layout: 'home',
+        },
     }
 ]
 

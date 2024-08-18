@@ -45,6 +45,10 @@
   .heading-text {
     @apply text-gray-900 dark:text-gray-100;
   }
+
+  .buy-button {
+    @apply bg-amber-500 !important;
+  }
 }
 
 html {
@@ -55,3 +59,4 @@ html {
   width : 100% !important;
   height: 350px !important;
 }
+

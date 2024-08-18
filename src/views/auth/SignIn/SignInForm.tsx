@@ -130,6 +130,7 @@ const SignInForm = (props: SignInFormProps) => {
                                 loading={isSubmitting}
                                 variant="solid"
                                 type="submit"
+                                disabled
                             >
                                 {isSubmitting ? 'Signing in...' : 'Sign In'}
                             </Button>

@@ -14,7 +14,7 @@ export type Config = {
 }
 
 export const defaultConfig = {
-    themeColor: 'indigo',
+    themeColor: 'yellow',
     direction: 'ltr',
     mode: 'light',
     locale: 'en',

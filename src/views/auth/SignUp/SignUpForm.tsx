@@ -139,6 +139,7 @@ const SignUpForm = (props: SignUpFormProps) => {
                                 loading={isSubmitting}
                                 variant="solid"
                                 type="submit"
+                                disabled
                             >
                                 {isSubmitting
                                     ? 'Creating Account...'

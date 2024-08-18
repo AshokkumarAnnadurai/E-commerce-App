@@ -12,10 +12,8 @@ type GridItemProps = {
 }
 
 const GridItem = ({ data }: GridItemProps) => {
-  const {id , img , name , price , discountPrice} = data
-  console.log("🚀 ~ GridItem ~ img:", img)
+  const {img , name , price , discountPrice} = data
 
-  
   return (
     <Card bodyClass="h-full">
       <div>

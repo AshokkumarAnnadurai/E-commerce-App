@@ -1,25 +1,12 @@
-
-const Star = ({ filled, half }: { filled: boolean; half?: boolean }) => {
-    let starSymbol = '☆' // Empty star by default
-
-    if (filled) {
-        starSymbol = '★' // Full star
-    } else if (half) {
-        starSymbol = '★' // Using the same symbol for both full and half stars, but style it differently
-    }
+const Star = ({ filled }: { filled?: boolean }) => {
+    // Use '★' for a filled star and '☆' for an empty star
+    const starSymbol = filled ? '★' : '☆';
 
     return (
-        <span className='text-3xl md:text4xl relative inline-block' style={{color: filled || half ? '#FFD700' : '#dcdcdc'}}
-        >
-            {half && !filled && (
-                <span className='absolute w-1/2 overflow-hidden inline-block whitespace-nowrap top-0 left-0 text-3xl md: text-4xl' style={{color: '#dcdcdc'}}
-                >
-                    ★
-                </span>
-            )}
+        <span className='text-3xl md:text-4xl' style={{ color: filled ? '#FFD700' : '#dcdcdc' }}>
             {starSymbol}
         </span>
-    )
+    );
 }
 
-export default Star
+export default Star;

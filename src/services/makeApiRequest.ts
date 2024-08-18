@@ -6,7 +6,6 @@ const makeApiRequest = async (
 ): Promise<Response> => {
     try {
         const url = `${baseUrl}${path}` // Combine base URL with path
-        console.log("🚀 ~ url:", url)
         const response = await fetch(url, { ...config })
         
         return response

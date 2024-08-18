@@ -1,76 +1,66 @@
-import React, { useEffect, useState } from 'react'
-import { useParams } from 'react-router-dom'
 import reducer, {
-    getproductById,
+    addToCart,
+    clearCommon_error,
+    toggleShowReviews,
     useAppDispatch,
     useAppSelector,
 } from '../store'
 import { injectReducer } from '@/store'
 import Header from './Header'
-import { calculateOriginalPrice } from '@/utils/helpers/helpers'
+import { calculateOriginalPrice, customToast } from '@/utils/helpers/helpers'
 import Star from './Star'
 import { Avatar, Button } from '@/components/ui'
 import { HiOutlineUser } from 'react-icons/hi'
-import { FaChevronDown, FaChevronUp } from 'react-icons/fa6'
-import Slider from 'react-slick'
-import 'slick-carousel/slick/slick.css'
-import 'slick-carousel/slick/slick-theme.css'
+import { FaCheck, FaChevronDown, FaChevronUp } from 'react-icons/fa6'
+import useProductDetails from '@/utils/hooks/useProductDetails'
+import { useEffect, useState } from 'react'
 
 
 injectReducer('HomeState', reducer)
 const ProductPage = () => {
     const dispatch = useAppDispatch()
-    const { id } = useParams()
-    const product = useAppSelector(
-        (state) => state.HomeState.data.selectedProduct
-    )
-    const [showReviews, setShowReviews] = useState(false)
-    console.log('🚀 ~ ProductPage ~ product:', product.imgs[0])
-
-    // Getting the current window location
+    const { product } = useProductDetails()
+    const showReviews = useAppSelector((state) => state.HomeState.data.showReviews)
+    const Common_error = useAppSelector((state)=>state.HomeState.data.Common_error)
     const windowOrigin = window.location.origin
     const fullStars = Math.floor(product.rating)
-    const hasHalfStar = product.rating % 1 >= 0.5
     const originalPrice = calculateOriginalPrice(product.price, 20)
-    useEffect(() => {
-        if (id) {
-            dispatch(getproductById(parseInt(id)))
-        }
-    }, [])
-    const settings = {
-        dots: true,
-        infinite: true,
-        speed: 500,
-        slidesToShow: 1,
-        slidesToScroll: 1,
+
+    // State to track if the product is added to the cart
+    const [isAddedToCart, setIsAddedToCart] = useState(false)
+
+    const handleAddToCart = () => {
+        dispatch(addToCart(product))
+        setIsAddedToCart(true)
     }
+
+   
+
+    useEffect(() => {
+        if (Common_error) {
+            customToast('danger', Common_error)
+            dispatch(clearCommon_error())
+        }
+    }, [Common_error])
+
     return (
         <div>
             <Header />
-            <div className="h-full text-center left-24 my-40 mx-20">
-                <div className="flex w-full">
-                    <div className="w-1/4 p-4">
+            <div className="text-center left-24 mt-24 md:mt-40 mb-10 md:mb-20 mx-0 md:mx-20">
+                <div className="flex flex-col md:flex-row w-full">
+                    <div className="w-full md:w-1/4 p-4">
                         <img
-                            src={`${windowOrigin}/${product.imgs[0]}`}
+                            src={`${windowOrigin}/${product.imgs}`}
                             alt="image"
                         />
                     </div>
-                    <div className="w-3/4 text-left flex flex-col gap-3 p-5">
+                    <div className="w-full md:w-3/4 text-left flex flex-col gap-3 p-5">
                         <h1>{product.title}</h1>
                         {product.reviews && product.reviews.length > 0 && (
                             <div className="flex items-center gap-3 text-base md:text-xl">
                                 <div>
                                     {[...Array(5)].map((_, index) => {
-                                        if (index < fullStars) {
-                                            return <Star key={index} filled />
-                                        }
-                                        if (
-                                            index === fullStars &&
-                                            hasHalfStar
-                                        ) {
-                                            return <Star key={index} half />
-                                        }
-                                        return <Star key={index} />
+                                        return <Star key={index} filled={index < fullStars} />
                                     })}
                                 </div>
                                 <span>
@@ -99,10 +89,16 @@ const ProductPage = () => {
                             InStock : {product.inStock}
                         </span>
                         <div className="flex gap-2">
-                            <Button className="w-64 bg-yellow-400 hover:bg-yellow-400">
-                                Add to Cart
+                            <Button className="w-64 bg-yellow-400 hover:bg-yellow-400" onClick={handleAddToCart} disabled={isAddedToCart}>
+                            {isAddedToCart ? (
+                                    <>
+                                        <FaCheck className="inline mr-2" /> Added to Cart
+                                    </>
+                                ) : (
+                                    'Add to Cart'
+                                )}
                             </Button>
-                            <Button className="w-64 bg-amber-500 hover:bg-amber-500">
+                            <Button className="w-64 buy-button" onClick={()=>customToast('info' , 'Please SignIn to purchase products')}>
                                 Buy Now
                             </Button>
                         </div>
@@ -110,7 +106,7 @@ const ProductPage = () => {
                             <div>
                                 <div
                                     className="flex items-center gap-2 cursor-pointer"
-                                    onClick={() => setShowReviews(!showReviews)}
+                                    onClick={() => dispatch(toggleShowReviews())}
                                 >
                                     <h4>Reviews</h4>
                                     {showReviews ? (
@@ -140,44 +136,14 @@ const ProductPage = () => {
                                                         <h5>{rev.name}</h5>
                                                     </div>
                                                     <div>
-                                                        {[...Array(5)].map(
-                                                            (_, index) => {
-                                                                if (
-                                                                    index <
-                                                                    fullStars
-                                                                ) {
-                                                                    return (
-                                                                        <Star
-                                                                            key={
-                                                                                index
-                                                                            }
-                                                                            filled
-                                                                        />
-                                                                    )
-                                                                }
-                                                                if (
-                                                                    index ===
-                                                                        fullStars &&
-                                                                    hasHalfStar
-                                                                ) {
-                                                                    return (
-                                                                        <Star
-                                                                            key={
-                                                                                index
-                                                                            }
-                                                                            half
-                                                                        />
-                                                                    )
-                                                                }
-                                                                return (
-                                                                    <Star
-                                                                        key={
-                                                                            index
-                                                                        }
-                                                                    />
-                                                                )
-                                                            }
-                                                        )}
+                                                        {[...Array(5)].map((_, index) => {
+                                                            return (
+                                                                <Star
+                                                                    key={index}
+                                                                    filled={index < fullStars}
+                                                                />
+                                                            )
+                                                        })}
                                                         <span className='text-semibold text-base md:text-xl'>{rev.title}</span>
                                                     </div>
                                                     <p className='text-base md:text-xl'>{rev.content}</p>

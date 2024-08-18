@@ -14,7 +14,6 @@ const baseUrl = import.meta.env.VITE_BASE_URL
 const ProductList = () => {
 
   const {id} = useParams();
-  console.log("🚀 ~ ProductList ~ id:", id)
 
   useEffect(()=>{
     const  fetchData = async ()=>{

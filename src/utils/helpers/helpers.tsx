@@ -1,6 +1,7 @@
-import { Spinner } from "@/components/ui"
+import { Spinner, toast } from "@/components/ui"
 import makeApiRequest from "@/services/makeApiRequest"
 import { ImSpinner } from 'react-icons/im'
+import Notification from '@/components/ui/Notification'
 
 
 export const CustomSpinner = () => {
@@ -9,6 +10,15 @@ export const CustomSpinner = () => {
             <Spinner size={60} indicator={ImSpinner} />
         </div>
     )
+}
+
+export const customToast = (
+    type: 'success' | 'warning' | 'danger' | 'info',
+    message: string,
+) => {
+    toast.push(<Notification type={type}>{message}</Notification>, {
+        placement: 'top-end',
+    })
 }
 
 // Function to calculate original price from discounted price and discount percentag

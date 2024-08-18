@@ -1,24 +1,31 @@
 import { useEffect, useState } from 'react'
-import { Button } from '@/components/ui'
+import { Badge, Button } from '@/components/ui'
 import { FaArrowRight } from "react-icons/fa";
 import { FaArrowCircleRight } from "react-icons/fa";
+import { FaCartShopping } from "react-icons/fa6";
+import { useAppSelector } from '../store';
+import { Link } from 'react-router-dom';
+
+const baseUrl = import.meta.env.VITE_BASE_URL
 
 const Header = () => {
     const [isMenuFocused, setIsMenuFocused] = useState(false)
-    const [menus , setMenus] = useState([])
+    const [menus, setMenus] = useState([])
     const windowOrigin = window.location.origin
+    const pathname = window.location.pathname
+    const cart = useAppSelector((state) => state.HomeState.data.cart)
 
-    useEffect(()=>{
-        const fetchData = async ()=>{
-            const response = await fetch("https://e-commerce-api-3l8b.onrender.com/api/categories").then((res)=>{
-                if(res.ok) {
+    useEffect(() => {
+        const fetchData = async () => {
+            const response = await fetch(`${baseUrl}/categories`).then((res) => {
+                if (res.ok) {
                     return res.json()
                 }
             })
             setMenus(response)
-        } 
+        }
         fetchData()
-    },[])
+    }, [])
 
 
 
@@ -27,9 +34,9 @@ const Header = () => {
             <div className="container overflow-hidden">
                 <div className="flex justify-between items-center">
                     <a className="flex p-2 " href="/">
-                        <img src={`${windowOrigin}/public\\assets\\logo.png`} alt='logo' height="50px" width="150px" color='text-black'/>
+                        <img src={`${windowOrigin}/public\\assets\\logo.png`} alt='logo' height="50px" width="150px" color='text-black' />
                     </a>
-                    <nav className="hidden lg:block">
+                    {pathname === '/' && <nav className="hidden lg:block">
                         <ul className="navbar flex flex-col justify-center font-chivo gap-8 lg:flex-row">
                             {menus && Array.isArray(menus) && menus.length ? menus?.map((link) => (
                                 <li
@@ -42,10 +49,16 @@ const Header = () => {
                                         {link?.title}
                                     </a>
                                 </li>
-                            )):null}
+                            )) : null}
                         </ul>
-                    </nav>
-                    <div className="hidden md:block">
+                    </nav>}
+                    <div className="hidden md:flex items-center gap-4">
+                        <Link to="/cart" className="flex items-center">
+                            <Badge content={cart ? cart.length : 0}>
+                                <FaCartShopping size={28} />
+                            </Badge>
+                        </Link>
+
                         <button type="button">
                             {' '}
                             <a
@@ -58,10 +71,10 @@ const Header = () => {
                                 <i>
                                     {' '}
                                     <div className="ml-[7px] w-[12px] inline-block group-hover:hidden">
-                                        <FaArrowRight/>
+                                        <FaArrowRight />
                                     </div>
                                     <div className="ml-[7px] w-[12px] hidden group-hover:inline-block">
-                                        <FaArrowCircleRight/>
+                                        <FaArrowCircleRight />
                                     </div>
                                 </i>
                             </a>
